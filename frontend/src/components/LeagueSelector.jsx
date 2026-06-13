@@ -1,4 +1,5 @@
 import React from 'react';
+import { useT } from '../i18n.jsx';
 
 const LEAGUES = [
   { code: 'PL', name: '英超 (Premier League)', country: '🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格兰' },
@@ -14,6 +15,7 @@ const LEAGUES = [
  * Horizontal scrolling list of leagues to filter matches and standings.
  */
 export default function LeagueSelector({ activeLeague = 'PL', onChange }) {
+  const { t } = useT();
   return (
     <div className="league-selector-container">
       {LEAGUES.map((league) => {
@@ -28,8 +30,8 @@ export default function LeagueSelector({ activeLeague = 'PL', onChange }) {
               {league.code}
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span className="league-name">{league.name}</span>
-              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{league.country}</span>
+              <span className="league-name">{t(league.name)}</span>
+              <span style={{ fontSize: '0.65rem', color: 'var(--text-muted)' }}>{t(league.country)}</span>
             </div>
           </div>
         );

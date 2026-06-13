@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TrendingUp, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
+import { useT } from '../i18n.jsx';
 
 export default function OddsPanel({ homeTeam, awayTeam, competition }) {
+  const { t } = useT();
   const [oddsData, setOddsData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [configured, setConfigured] = useState(true);
@@ -31,10 +33,10 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <TrendingUp size={16} style={{ color: 'var(--accent)' }} />
-          赔率对比与价值投注
+          {t('赔率对比与价值投注')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          未配置 THE_ODDS_API_KEY，请在 .env 文件中设置。
+          {t('未配置 THE_ODDS_API_KEY，请在 .env 文件中设置。')}
         </div>
       </div>
     );
@@ -45,7 +47,7 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <div className="loading-spinner-overlay" style={{ padding: '20px' }}>
           <div className="spinner"></div>
-          <span>正在获取赔率数据...</span>
+          <span>{t('正在获取赔率数据...')}</span>
         </div>
       </div>
     );
@@ -56,10 +58,10 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <TrendingUp size={16} style={{ color: 'var(--accent)' }} />
-          赔率对比与价值投注
+          {t('赔率对比与价值投注')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          暂无该比赛的赔率数据。
+          {t('暂无该比赛的赔率数据。')}
         </div>
       </div>
     );
@@ -77,9 +79,9 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
         onClick={() => setCollapsed(c => !c)}
       >
         <TrendingUp size={16} style={{ color: 'var(--accent)' }} />
-        赔率对比与价值投注分析
+        {t('赔率对比与价值投注分析')}
         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          {collapsed ? '展开' : '收起'}
+          {collapsed ? t('展开') : t('收起')}
           {collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
         </span>
       </h3>
@@ -91,10 +93,10 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
           <table className="data-table" style={{ fontSize: '0.8rem' }}>
             <thead>
               <tr>
-                <th>博彩公司</th>
-                <th>{homeTeam} 胜</th>
-                <th>平局</th>
-                <th>{awayTeam} 胜</th>
+                <th>{t('博彩公司')}</th>
+                <th>{homeTeam} {t('胜')}</th>
+                <th>{t('平局')}</th>
+                <th>{awayTeam} {t('胜')}</th>
               </tr>
             </thead>
             <tbody>
@@ -122,7 +124,7 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
         <div>
           <h4 style={{ fontSize: '0.85rem', fontWeight: '700', marginBottom: '12px', color: 'var(--text-secondary)' }}>
             <AlertTriangle size={14} style={{ color: 'var(--draw)', marginRight: '6px', verticalAlign: 'middle' }} />
-            价值投注机会 (EV &gt; 0)
+            {t('价值投注机会 (EV > 0)')}
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {positiveEV.length > 0 ? positiveEV.map((vb, idx) => (
@@ -134,15 +136,15 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
               }}>
                 <div>
                   <span style={{ fontWeight: '700', fontSize: '0.85rem' }}>
-                    {vb.outcome === 'home' ? homeTeam : vb.outcome === 'away' ? awayTeam : '平局'}
+                    {vb.outcome === 'home' ? homeTeam : vb.outcome === 'away' ? awayTeam : t('平局')}
                   </span>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginLeft: '8px' }}>
                     @{vb.bookmaker}
                   </span>
                 </div>
                 <div style={{ display: 'flex', gap: '16px', alignItems: 'center', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
-                  <span>赔率: {vb.decimal_odds.toFixed(2)}</span>
-                  <span>模型: {(vb.model_prob * 100).toFixed(1)}%</span>
+                  <span>{t('赔率: ')}{vb.decimal_odds.toFixed(2)}</span>
+                  <span>{t('模型: ')}{(vb.model_prob * 100).toFixed(1)}%</span>
                   <span style={{ color: 'var(--win-home)', fontWeight: '700' }}>
                     EV: +{(vb.expected_value * 100).toFixed(1)}%
                   </span>
@@ -150,7 +152,7 @@ export default function OddsPanel({ homeTeam, awayTeam, competition }) {
               </div>
             )) : (
               <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '12px', fontSize: '0.8rem' }}>
-                当前赔率与模型估值一致，暂无明显价值投注机会。
+                {t('当前赔率与模型估值一致，暂无明显价值投注机会。')}
               </div>
             )}
           </div>

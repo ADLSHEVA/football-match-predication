@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { LayoutGrid, Users, Shield } from 'lucide-react';
+import { useT } from '../i18n.jsx';
 
 export default function LineupPanel({ homeTeam, awayTeam, competition }) {
+  const { t } = useT();
   const [lineupData, setLineupData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [configured, setConfigured] = useState(true);
@@ -30,10 +32,10 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <LayoutGrid size={16} style={{ color: 'var(--accent)' }} />
-          阵容与阵型分析
+          {t('阵容与阵型分析')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          未配置 API_FOOTBALL_KEY，请在 .env 文件中设置。
+          {t('未配置 API_FOOTBALL_KEY，请在 .env 文件中设置。')}
         </div>
       </div>
     );
@@ -44,7 +46,7 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <div className="loading-spinner-overlay" style={{ padding: '20px' }}>
           <div className="spinner"></div>
-          <span>正在查询阵容信息...</span>
+          <span>{t('正在查询阵容信息...')}</span>
         </div>
       </div>
     );
@@ -55,10 +57,10 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <LayoutGrid size={16} style={{ color: 'var(--accent)' }} />
-          阵容与阵型分析
+          {t('阵容与阵型分析')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          阵容尚未公布（通常在比赛前1小时左右确认）
+          {t('阵容尚未公布（通常在比赛前1小时左右确认）')}
         </div>
       </div>
     );
@@ -70,7 +72,7 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
     <div className="glass-panel" style={{ padding: '20px' }}>
       <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '16px' }}>
         <LayoutGrid size={16} style={{ color: 'var(--accent)' }} />
-        阵容与阵型分析
+        {t('阵容与阵型分析')}
       </h3>
 
       {/* Formation Matchup Analysis */}
@@ -109,7 +111,7 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
         <div>
           <h4 style={{ fontSize: '0.85rem', fontWeight: '700', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Users size={14} style={{ color: 'var(--accent)' }} />
-            首发阵容
+            {t('首发阵容')}
           </h4>
           <div className="lineup-dual-grid">
             {lineupData.home && (
@@ -123,8 +125,8 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
                     <thead>
                       <tr>
                         <th style={{ width: '30px' }}>#</th>
-                        <th>球员</th>
-                        <th style={{ width: '40px' }}>位置</th>
+                        <th>{t('球员')}</th>
+                        <th style={{ width: '40px' }}>{t('位置')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -141,7 +143,7 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
                 {lineupData.home.coach && (
                   <div className="lineup-coach">
                     <Shield size={11} style={{ display: 'inline', marginRight: '4px' }} />
-                    主教练: {lineupData.home.coach}
+                    {t('主教练: ')}{lineupData.home.coach}
                   </div>
                 )}
               </div>
@@ -158,8 +160,8 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
                     <thead>
                       <tr>
                         <th style={{ width: '30px' }}>#</th>
-                        <th>球员</th>
-                        <th style={{ width: '40px' }}>位置</th>
+                        <th>{t('球员')}</th>
+                        <th style={{ width: '40px' }}>{t('位置')}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -176,7 +178,7 @@ export default function LineupPanel({ homeTeam, awayTeam, competition }) {
                 {lineupData.away.coach && (
                   <div className="lineup-coach">
                     <Shield size={11} style={{ display: 'inline', marginRight: '4px' }} />
-                    主教练: {lineupData.away.coach}
+                    {t('主教练: ')}{lineupData.away.coach}
                   </div>
                 )}
               </div>

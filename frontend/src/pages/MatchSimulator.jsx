@@ -6,6 +6,7 @@ import ScoreMatrix from '../components/ScoreMatrix';
 import OddsPanel from '../components/OddsPanel';
 import H2HPanel from '../components/H2HPanel';
 import LineupPanel from '../components/LineupPanel';
+import { useT } from '../i18n.jsx';
 
 const DEFAULT_ADJUSTMENTS = {
   home_attack_adj: 1.0,
@@ -20,6 +21,7 @@ const DEFAULT_ADJUSTMENTS = {
 };
 
 export default function MatchSimulator({ match, activeLeague, onBack }) {
+  const { t } = useT();
   const [adjustments, setAdjustments] = useState(DEFAULT_ADJUSTMENTS);
   const [simulation, setSimulation] = useState(null);
   const [baseline, setBaseline] = useState(null);
@@ -70,12 +72,12 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
         });
 
         if (!res.ok) {
-          let errMsg = '模拟失败，后端返回错误';
+          let errMsg = t('模拟失败，后端返回错误');
           try {
             const errData = await res.json();
             errMsg = errData.detail || errMsg;
           } catch {
-            errMsg = `服务器错误 (HTTP ${res.status})`;
+            errMsg = `${t('服务器错误 (HTTP ')}${res.status})`;
           }
           throw new Error(errMsg);
         }
@@ -111,11 +113,11 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
 
   return (
     <div className="simulator-page-wrapper">
-      
+
       {/* Back Link */}
       <div className="back-link" onClick={onBack}>
         <ArrowLeft size={16} />
-        返回赛程控制台 (Dashboard)
+        {t('返回赛程控制台 (Dashboard)')}
       </div>
 
       {/* Simulator Header */}
@@ -133,12 +135,12 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
             <span className="sim-vs-text">VS</span>
             {simulation && (
               <span className="expected-goals-badge">
-                xG 期望: {simulation.expected_home_goals?.toFixed(2)} - {simulation.expected_away_goals?.toFixed(2)}
+                {t('xG 期望: ')}{simulation.expected_home_goals?.toFixed(2)} - {simulation.expected_away_goals?.toFixed(2)}
               </span>
             )}
             {baseline && (
               <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', marginTop: '4px' }}>
-                基准 xG: {baseline.expected_home_goals?.toFixed(2)} - {baseline.expected_away_goals?.toFixed(2)}
+                {t('基准 xG: ')}{baseline.expected_home_goals?.toFixed(2)} - {baseline.expected_away_goals?.toFixed(2)}
               </span>
             )}
           </div>
@@ -156,27 +158,27 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
       {/* Error Alert */}
       {errorMsg && (
         <div className="alert-banner warning" style={{ marginBottom: '24px' }}>
-          模拟出错: {errorMsg}。请确保模型已拟合，或者返回主页重试。
+          {t('模拟出错: ')}{errorMsg}{t('。请确保模型已拟合，或者返回主页重试。')}
         </div>
       )}
 
       {/* Simulator Core Layout */}
       <div className="simulator-layout">
-        
+
         {/* Left Slider Column */}
         <div className="glass-panel">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
             <h2 className="section-title" style={{ fontSize: '1.1rem', margin: 0 }}>
               <Cpu size={18} style={{ color: 'var(--primary)' }} />
-              星蜥定量微调层
+              {t('星蜥定量微调层')}
             </h2>
             <button className="btn-action" onClick={handleReset} style={{ padding: '4px 10px', fontSize: '0.75rem' }}>
-              重置
+              {t('重置')}
             </button>
           </div>
-          <DynamicSliders 
-            adjustments={adjustments} 
-            onChange={setAdjustments} 
+          <DynamicSliders
+            adjustments={adjustments}
+            onChange={setAdjustments}
             homeTeam={match.home_team}
             awayTeam={match.away_team}
           />
@@ -212,37 +214,37 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
                 <div className="prob-title-row">
                   <span className="section-title">
                     <TrendingUp size={18} style={{ color: 'var(--accent)' }} />
-                    蒙特卡洛仿真输出 (基于 10,000 次时间步迭代)
+                    {t('蒙特卡洛仿真输出 (基于 10,000 次时间步迭代)')}
                   </span>
                   {loading && <span className="brand-badge animate-spin">REFRESHING</span>}
                 </div>
 
                 <div className="prob-percentage-display" style={{ marginBottom: '24px' }}>
                   <div className="prob-card home">
-                    <span className="prob-label">{match.home_team} 胜率</span>
+                    <span className="prob-label">{match.home_team} {t('胜率')}</span>
                     <span className="prob-val">{(simulation.home_win_prob * 100).toFixed(1)}%</span>
                   </div>
                   <div className="prob-card draw">
-                    <span className="prob-label">平局概率</span>
+                    <span className="prob-label">{t('平局概率')}</span>
                     <span className="prob-val">{(simulation.draw_prob * 100).toFixed(1)}%</span>
                   </div>
                   <div className="prob-card away">
-                    <span className="prob-label">{match.away_team} 胜率</span>
+                    <span className="prob-label">{match.away_team} {t('胜率')}</span>
                     <span className="prob-val">{(simulation.away_win_prob * 100).toFixed(1)}%</span>
                   </div>
                 </div>
 
-                <PredictionGauge 
-                  homeWinProb={simulation.home_win_prob} 
-                  drawProb={simulation.draw_prob} 
-                  awayWinProb={simulation.away_win_prob} 
+                <PredictionGauge
+                  homeWinProb={simulation.home_win_prob}
+                  drawProb={simulation.draw_prob}
+                  awayWinProb={simulation.away_win_prob}
                 />
               </div>
 
               {/* Exact Score Matrix Heatmap */}
               <div className="glass-panel" style={{ padding: '20px' }}>
-                <ScoreMatrix 
-                  matrix={simulation.score_matrix} 
+                <ScoreMatrix
+                  matrix={simulation.score_matrix}
                   homeTeam={match.home_team}
                   awayTeam={match.away_team}
                 />
@@ -250,12 +252,12 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
 
               {/* Exact Scores & Over/Under columns */}
               <div className="prediction-details-grid">
-                
+
                 {/* Top 5 Scores */}
                 <div className="glass-panel" style={{ padding: '20px' }}>
                   <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '16px' }}>
                     <Award size={16} style={{ color: 'var(--accent)' }} />
-                    最可能出现的精确比分 (Top 5)
+                    {t('最可能出现的精确比分 (Top 5)')}
                   </h3>
                   <div className="top-scores-list">
                     {simulation.most_likely_scores && simulation.most_likely_scores.map((item, idx) => {
@@ -267,8 +269,8 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
                             {match.home_team} {hGoals} - {aGoals} {match.away_team}
                           </span>
                           <div className="top-score-bar-bg">
-                            <div 
-                              className="top-score-bar-fill" 
+                            <div
+                              className="top-score-bar-fill"
                               style={{ width: `${(prob / simulation.most_likely_scores[0][2]) * 100}%` }}
                             />
                           </div>
@@ -283,15 +285,15 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
                 <div className="glass-panel" style={{ padding: '20px' }}>
                   <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '16px' }}>
                     <Shield size={16} style={{ color: 'var(--accent)' }} />
-                    进球数大小盘口概率 (Over/Under)
+                    {t('进球数大小盘口概率 (Over/Under)')}
                   </h3>
                   <div className="standings-container">
                     <table className="data-table" style={{ fontSize: '0.8rem' }}>
                       <thead>
                         <tr>
-                          <th>进球盘口</th>
-                          <th>大球概率 (Over)</th>
-                          <th>小球概率 (Under)</th>
+                          <th>{t('进球盘口')}</th>
+                          <th>{t('大球概率 (Over)')}</th>
+                          <th>{t('小球概率 (Under)')}</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -300,10 +302,10 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
                           const underKey = `U${line}`;
                           const overProb = simulation.over_under ? simulation.over_under[overKey] : 0;
                           const underProb = simulation.over_under ? simulation.over_under[underKey] : 0;
-                          
+
                           return (
                             <tr key={line}>
-                              <td style={{ fontWeight: '700', fontFamily: 'var(--font-mono)' }}>{line} 球</td>
+                              <td style={{ fontWeight: '700', fontFamily: 'var(--font-mono)' }}>{line} {t('球')}</td>
                               <td style={{ color: 'var(--win-home)', fontFamily: 'var(--font-mono)' }}>
                                 {(overProb * 100).toFixed(1)}%
                               </td>
@@ -323,7 +325,7 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
           ) : (
             <div className="glass-panel loading-spinner-overlay" style={{ height: '300px' }}>
               <div className="spinner"></div>
-              <span>正在计算蒙特卡洛赔率...</span>
+              <span>{t('正在计算蒙特卡洛赔率...')}</span>
             </div>
           )}
 

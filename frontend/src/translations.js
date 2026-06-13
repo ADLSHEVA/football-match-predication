@@ -128,4 +128,102 @@ export const EN = {
   '小组名次按模拟均分排定，淘汰赛每场高亮一方为模型favorite——仅为最可能路径，非确定结果。':
     'Group ranks are by mean simulated points; in each knockout tie the model favourite is highlighted — a most-likely path, not a certain outcome.',
   '冠军': 'Champion', '% 夺冠': '% title',
+
+  // ── Common team words ────────────────────────────────────
+  '主队': 'Home', '客队': 'Away', '主': 'Home', '客': 'Away',
+  '胜': 'win', '胜率': 'win %', '球': 'goals',
+
+  // ── League selector ──────────────────────────────────────
+  '英超 (Premier League)': 'Premier League',
+  '西甲 (La Liga)': 'La Liga',
+  '德甲 (Bundesliga)': 'Bundesliga',
+  '意甲 (Serie A)': 'Serie A',
+  '法甲 (Ligue 1)': 'Ligue 1',
+  '欧冠 (Champions League)': 'Champions League',
+  '🏴󠁧󠁢󠁥󠁮󠁧󠁿 英格兰': '🏴󠁧󠁢󠁥󠁮󠁧󠁿 England',
+  '🇪🇸 西班牙': '🇪🇸 Spain',
+  '🇩🇪 德国': '🇩🇪 Germany',
+  '🇮🇹 意大利': '🇮🇹 Italy',
+  '🇫🇷 法国': '🇫🇷 France',
+  '🇪🇺 欧洲': '🇪🇺 Europe',
+
+  // ── DynamicSliders ───────────────────────────────────────
+  '临场状态': 'match-day form',
+  '进攻系数 (Attack Modifier)': 'Attack Modifier',
+  '防守系数 (Defense Modifier)': 'Defense Modifier',
+  '体能衰减 (Stamina Decay)': 'Stamina Decay',
+  '1.0=基准 | 0.8=主力缺阵 | 1.2=状态爆棚': '1.0=base | 0.8=key player out | 1.2=in top form',
+  '1.0=基准 | 1.2=漏斗防线 | 0.8=防守铜墙铁壁': '1.0=base | 1.2=leaky defense | 0.8=rock solid',
+  '后半场疲劳度。0=正常 | 0.15=双线作战/体能危机': 'Late-game fatigue. 0=normal | 0.15=fixture congestion',
+  '比赛全局战术': 'Match-wide Tactics',
+  '战术保守度 (Tempo / Openness)': 'Tactical Conservatism (Tempo / Openness)',
+  '两队进球倾向。0.7=沉闷防守大战 | 1.3=对攻大球局': "Both teams' scoring tempo. 0.7=cagey | 1.3=open & high-scoring",
+  '领先队死守战术 (Park the Bus)': 'Park the Bus (leader defends)',
+  '领先一球后是否收缩防守': 'Whether the leader sits back after going 1-0 up',
+  '死守触发时间 (Trigger Minute)': 'Trigger minute',
+  '第 ': 'Min ', ' 分钟': '',
+
+  // ── MatchSimulator ───────────────────────────────────────
+  '模拟失败，后端返回错误': 'Simulation failed — backend returned an error',
+  '返回赛程控制台 (Dashboard)': 'Back to Dashboard',
+  'xG 期望: ': 'xG expected: ', '基准 xG: ': 'Baseline xG: ',
+  '模拟出错: ': 'Simulation error: ',
+  '。请确保模型已拟合，或者返回主页重试。': '. Make sure the model is fitted, or go back and retry.',
+  '星蜥定量微调层': 'Starlizard Quant Tuning',
+  '重置': 'Reset',
+  '蒙特卡洛仿真输出 (基于 10,000 次时间步迭代)': 'Monte-Carlo Output (10,000 time-step iterations)',
+  '平局概率': 'Draw %',
+  '最可能出现的精确比分 (Top 5)': 'Most Likely Exact Scores (Top 5)',
+  '进球数大小盘口概率 (Over/Under)': 'Over/Under Goal-Line Probabilities',
+  '进球盘口': 'Line', '大球概率 (Over)': 'Over', '小球概率 (Under)': 'Under',
+  '正在计算蒙特卡洛赔率...': 'Computing Monte-Carlo odds...',
+
+  // ── Standings ────────────────────────────────────────────
+  '无法获取积分榜数据，可能是 API Key 达到限制或网络问题': 'Failed to load standings — API key limit reached or a network issue.',
+  '选择目标联赛积分榜': 'Select a league table',
+  '当前积分与量化指标对比': 'Standings vs Quant Metrics',
+  '结合实时联赛积分，与 Dixon-Coles 拟合进攻/防守实力 (α, β) 和当前 ELO。':
+    'Live league points alongside Dixon-Coles attack/defense strengths (α, β) and current ELO.',
+  '错误: ': 'Error: ',
+  '正在载入联赛数据与拟合指标...': 'Loading league data and fitted metrics...',
+  '排名': 'Rank', '已赛': 'P', '胜/平/负': 'W/D/L', '进/失/净': 'GF/GA/GD',
+  '积分': 'Pts', 'ELO 评分': 'ELO', '进攻强度 (α)': 'Attack (α)', '防守强度 (β)': 'Defense (β)',
+  '未拟合': 'not fitted',
+  '暂无当前联赛积分榜数据，请检查网络或在主页同步数据。':
+    'No standings for this league. Check your connection or sync data on the home page.',
+
+  // ── OddsPanel ────────────────────────────────────────────
+  '赔率对比与价值投注': 'Odds & Value Bets',
+  '未配置 THE_ODDS_API_KEY，请在 .env 文件中设置。': 'THE_ODDS_API_KEY not configured. Set it in the .env file.',
+  '正在获取赔率数据...': 'Loading odds...',
+  '暂无该比赛的赔率数据。': 'No odds for this match.',
+  '赔率对比与价值投注分析': 'Odds & Value-Bet Analysis',
+  '展开': 'Expand',
+  '博彩公司': 'Bookmaker',
+  '价值投注机会 (EV > 0)': 'Value Bets (EV > 0)',
+  '赔率: ': 'Odds: ', '模型: ': 'Model: ',
+  '当前赔率与模型估值一致，暂无明显价值投注机会。': 'Odds match the model — no clear value bets right now.',
+
+  // ── H2HPanel ─────────────────────────────────────────────
+  '历史交锋记录 (H2H)': 'Head-to-Head (H2H)',
+  '未配置 API_FOOTBALL_KEY，请在 .env 文件中设置。': 'API_FOOTBALL_KEY not configured. Set it in the .env file.',
+  '正在查询历史交锋...': 'Loading head-to-head...',
+  '暂无历史交锋数据。': 'No head-to-head data.',
+  '历史交锋记录 (近 ': 'Head-to-Head (last ', ' 场)': ')',
+  '场均进球: ': 'Avg goals: ',
+  '日期': 'Date', '比分': 'Score',
+
+  // ── LineupPanel ──────────────────────────────────────────
+  '阵容与阵型分析': 'Lineups & Formation Analysis',
+  '正在查询阵容信息...': 'Loading lineups...',
+  '阵容尚未公布（通常在比赛前1小时左右确认）': 'Lineups not announced yet (usually confirmed ~1h before kick-off).',
+  '首发阵容': 'Starting XI',
+  '球员': 'Player', '位置': 'Pos', '主教练: ': 'Coach: ',
+
+  // ── ScoreMatrix ──────────────────────────────────────────
+  '比分概率分布图 (Heatmap)': 'Score Probability Heatmap',
+  '将鼠标悬停在单元格上以查看详细概率': 'Hover a cell to see the exact probability',
+
+  // ── PredictionGauge (title tooltips) ─────────────────────
+  '主队胜率: ': 'Home win: ', '平局概率: ': 'Draw: ', '客队胜率: ': 'Away win: ',
 };

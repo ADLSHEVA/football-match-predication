@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Users, ChevronDown, ChevronUp } from 'lucide-react';
+import { useT } from '../i18n.jsx';
 
 export default function H2HPanel({ homeTeam, awayTeam }) {
+  const { t } = useT();
   const [h2hData, setH2hData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [configured, setConfigured] = useState(true);
@@ -31,10 +33,10 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <Users size={16} style={{ color: 'var(--accent)' }} />
-          历史交锋记录 (H2H)
+          {t('历史交锋记录 (H2H)')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          未配置 API_FOOTBALL_KEY，请在 .env 文件中设置。
+          {t('未配置 API_FOOTBALL_KEY，请在 .env 文件中设置。')}
         </div>
       </div>
     );
@@ -45,7 +47,7 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <div className="loading-spinner-overlay" style={{ padding: '20px' }}>
           <div className="spinner"></div>
-          <span>正在查询历史交锋...</span>
+          <span>{t('正在查询历史交锋...')}</span>
         </div>
       </div>
     );
@@ -56,10 +58,10 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
       <div className="glass-panel" style={{ padding: '20px' }}>
         <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px' }}>
           <Users size={16} style={{ color: 'var(--accent)' }} />
-          历史交锋记录 (H2H)
+          {t('历史交锋记录 (H2H)')}
         </h3>
         <div style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '20px', fontSize: '0.85rem' }}>
-          暂无历史交锋数据。
+          {t('暂无历史交锋数据。')}
         </div>
       </div>
     );
@@ -75,9 +77,9 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
         onClick={() => setCollapsed(c => !c)}
       >
         <Users size={16} style={{ color: 'var(--accent)' }} />
-        历史交锋记录 (近 {h2hData.total_matches} 场)
+        {t('历史交锋记录 (近 ')}{h2hData.total_matches}{t(' 场)')}
         <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          {collapsed ? '展开' : '收起'}
+          {collapsed ? t('展开') : t('收起')}
           {collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
         </span>
       </h3>
@@ -86,21 +88,21 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
       {/* Summary Stats */}
       <div className="prob-percentage-display" style={{ marginBottom: '20px' }}>
         <div className="prob-card home">
-          <span className="prob-label">{homeTeam} 胜</span>
+          <span className="prob-label">{homeTeam} {t('胜')}</span>
           <span className="prob-val">{h2hData.home_wins}</span>
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
             {((h2hData.home_wins / total) * 100).toFixed(0)}%
           </span>
         </div>
         <div className="prob-card draw">
-          <span className="prob-label">平局</span>
+          <span className="prob-label">{t('平局')}</span>
           <span className="prob-val">{h2hData.draws}</span>
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
             {((h2hData.draws / total) * 100).toFixed(0)}%
           </span>
         </div>
         <div className="prob-card away">
-          <span className="prob-label">{awayTeam} 胜</span>
+          <span className="prob-label">{awayTeam} {t('胜')}</span>
           <span className="prob-val">{h2hData.away_wins}</span>
           <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
             {((h2hData.away_wins / total) * 100).toFixed(0)}%
@@ -111,7 +113,7 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
       {/* Avg Goals */}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '16px', fontSize: '0.85rem' }}>
         <span style={{ color: 'var(--text-secondary)' }}>
-          场均进球: <span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--accent)' }}>
+          {t('场均进球: ')}<span style={{ fontFamily: 'var(--font-mono)', fontWeight: '700', color: 'var(--accent)' }}>
             {h2hData.avg_home_goals} - {h2hData.avg_away_goals}
           </span>
         </span>
@@ -122,15 +124,15 @@ export default function H2HPanel({ homeTeam, awayTeam }) {
         <table className="data-table" style={{ fontSize: '0.8rem' }}>
           <thead>
             <tr>
-              <th>日期</th>
-              <th>主队</th>
-              <th>比分</th>
-              <th>客队</th>
+              <th>{t('日期')}</th>
+              <th>{t('主队')}</th>
+              <th>{t('比分')}</th>
+              <th>{t('客队')}</th>
             </tr>
           </thead>
           <tbody>
             {h2hData.recent_results.slice(0, 8).map((r, idx) => {
-              const dateStr = r.fixture_date ? new Date(r.fixture_date).toLocaleDateString('zh-CN') : '-';
+              const dateStr = r.fixture_date ? new Date(r.fixture_date).toLocaleDateString(undefined) : '-';
               const hg = r.home_goals ?? '-';
               const ag = r.away_goals ?? '-';
               const isDraw = hg === ag;
