@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trophy } from 'lucide-react';
+import { useT } from '../i18n.jsx';
 
 /**
  * WCBracket
@@ -69,6 +70,7 @@ function Column({ title, matches }) {
 }
 
 export default function WCBracket({ bracket }) {
+  const { t } = useT();
   if (!bracket) return null;
   const { r32 = [], r16 = [], qf = [], sf = [], final = [], projected_champion } = bracket;
 
@@ -76,18 +78,18 @@ export default function WCBracket({ bracket }) {
     <div className="glass-panel" style={{ padding: '20px', overflowX: 'auto' }}>
       <h3 className="section-title" style={{ fontSize: '1rem', marginBottom: '6px' }}>
         <Trophy size={18} style={{ color: 'var(--accent)' }} />
-        淘汰赛对阵预测 (模型最可能晋级路径)
+        {t('淘汰赛对阵预测 (模型最可能晋级路径)')}
       </h3>
       <p style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: '18px' }}>
-        小组名次按模拟均分排定，淘汰赛每场高亮一方为模型favorite——仅为最可能路径，非确定结果。
+        {t('小组名次按模拟均分排定，淘汰赛每场高亮一方为模型favorite——仅为最可能路径，非确定结果。')}
       </p>
 
       <div style={{ display: 'flex', gap: '18px', alignItems: 'stretch', minWidth: 'max-content', paddingBottom: '8px' }}>
-        <Column title="32 强" matches={r32} />
-        <Column title="16 强" matches={r16} />
-        <Column title="1/4 决赛" matches={qf} />
-        <Column title="半决赛" matches={sf} />
-        <Column title="决赛" matches={final} />
+        <Column title={t('32 强')} matches={r32} />
+        <Column title={t('16 强')} matches={r16} />
+        <Column title={t('1/4 决赛')} matches={qf} />
+        <Column title={t('半决赛')} matches={sf} />
+        <Column title={t('决赛')} matches={final} />
 
         {/* Champion */}
         <div style={{ display: 'flex', flexDirection: 'column', minWidth: '150px' }}>
@@ -95,7 +97,7 @@ export default function WCBracket({ bracket }) {
             fontSize: '0.72rem', fontWeight: 700, color: 'var(--draw)',
             textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '10px', textAlign: 'center',
           }}>
-            冠军
+            {t('冠军')}
           </div>
           <div style={{ display: 'flex', flex: 1, alignItems: 'center' }}>
             <div style={{
@@ -108,7 +110,7 @@ export default function WCBracket({ bracket }) {
               <div style={{ fontWeight: 800, fontSize: '0.85rem' }}>{projected_champion?.name}</div>
               {projected_champion?.p_champion != null && (
                 <div style={{ fontSize: '0.7rem', color: 'var(--draw)', fontFamily: 'var(--font-mono)', marginTop: '4px' }}>
-                  {(projected_champion.p_champion * 100).toFixed(1)}% 夺冠
+                  {(projected_champion.p_champion * 100).toFixed(1)}{t('% 夺冠')}
                 </div>
               )}
             </div>

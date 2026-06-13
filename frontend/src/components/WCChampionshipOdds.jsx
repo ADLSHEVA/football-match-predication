@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Trophy, Medal } from 'lucide-react';
+import { useT } from '../i18n.jsx';
 
 /**
  * WCChampionshipOdds
@@ -7,24 +8,25 @@ import { Trophy, Medal } from 'lucide-react';
  * `teams` is expected pre-sorted by p_champion (the API returns it that way).
  */
 export default function WCChampionshipOdds({ teams = [] }) {
+  const { t } = useT();
   const [showAll, setShowAll] = useState(false);
 
   if (!teams.length) return null;
 
-  const maxChamp = Math.max(...teams.map((t) => t.p_champion), 0.0001);
+  const maxChamp = Math.max(...teams.map((x) => x.p_champion), 0.0001);
   const shown = showAll ? teams : teams.slice(0, 16);
 
   return (
     <div className="glass-panel" style={{ padding: '20px' }}>
       <h3 className="section-title" style={{ fontSize: '1rem', marginBottom: '16px' }}>
         <Trophy size={18} style={{ color: 'var(--draw)' }} />
-        夺冠概率排行 (蒙特卡洛全赛程模拟)
+        {t('夺冠概率排行 (蒙特卡洛全赛程模拟)')}
       </h3>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        {shown.map((t, idx) => (
+        {shown.map((tm, idx) => (
           <div
-            key={t.name}
+            key={tm.name}
             style={{
               display: 'grid',
               gridTemplateColumns: '28px 1.6fr 3fr 56px',
@@ -43,17 +45,17 @@ export default function WCChampionshipOdds({ teams = [] }) {
             </span>
 
             <span style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
-              <span style={{ fontSize: '1.1rem' }}>{t.flag}</span>
+              <span style={{ fontSize: '1.1rem' }}>{tm.flag}</span>
               <span style={{
                 fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
-              }} title={`${t.name} · ELO ${t.elo}`}>
-                {t.name}
+              }} title={`${tm.name} · ELO ${tm.elo}`}>
+                {tm.name}
               </span>
             </span>
 
             <div style={{ position: 'relative', height: '20px', background: 'rgba(15,23,42,0.5)', borderRadius: '6px', overflow: 'hidden' }}>
               <div style={{
-                position: 'absolute', inset: 0, width: `${(t.p_champion / maxChamp) * 100}%`,
+                position: 'absolute', inset: 0, width: `${(tm.p_champion / maxChamp) * 100}%`,
                 background: idx === 0
                   ? 'linear-gradient(90deg, var(--draw), #fbbf24)'
                   : 'linear-gradient(90deg, var(--primary), var(--accent))',
@@ -63,7 +65,7 @@ export default function WCChampionshipOdds({ teams = [] }) {
                 position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)',
                 fontSize: '0.65rem', color: 'var(--text-secondary)', fontFamily: 'var(--font-mono)',
               }}>
-                决赛 {(t.p_final * 100).toFixed(1)}% · 4强 {(t.p_sf * 100).toFixed(1)}%
+                {t('决赛 ')}{(tm.p_final * 100).toFixed(1)}%{t(' · 4强 ')}{(tm.p_sf * 100).toFixed(1)}%
               </span>
             </div>
 
@@ -71,7 +73,7 @@ export default function WCChampionshipOdds({ teams = [] }) {
               fontFamily: 'var(--font-mono)', fontWeight: 800, textAlign: 'right',
               color: idx === 0 ? 'var(--draw)' : 'var(--text-primary)',
             }}>
-              {(t.p_champion * 100).toFixed(1)}%
+              {(tm.p_champion * 100).toFixed(1)}%
             </span>
           </div>
         ))}
@@ -84,7 +86,7 @@ export default function WCChampionshipOdds({ teams = [] }) {
           style={{ marginTop: '12px', width: '100%', justifyContent: 'center', display: 'flex', gap: '6px' }}
         >
           <Medal size={14} />
-          {showAll ? '收起' : `显示全部 ${teams.length} 支球队`}
+          {showAll ? t('收起') : `${t('显示全部')} ${teams.length}${t(' 支球队')}`}
         </button>
       )}
     </div>
