@@ -35,7 +35,7 @@ function FinishedRow({ f }) {
   const homeWon = f.home_goals > f.away_goals;
   const awayWon = f.away_goals > f.home_goals;
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr 150px', gap: '10px', alignItems: 'center', padding: '8px 6px', borderTop: '1px solid var(--border-light)' }}>
+    <div className="wc-fx-row wc-fx-finished">
       <span style={{ textAlign: 'right', fontWeight: homeWon ? 700 : 400, color: homeWon ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
         {f.home_team} {f.home_flag}
       </span>
@@ -46,7 +46,7 @@ function FinishedRow({ f }) {
         {f.away_flag} {f.away_team}
       </span>
       {p && (
-        <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', justifyContent: 'flex-end' }}>
+        <span className="wc-fx-pred" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.7rem', justifyContent: 'flex-end' }}>
           <span title="赛前预测" style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
             预测 {RESULT_LABEL[p.pred_result]} {p.pred_home}-{p.pred_away}
           </span>
@@ -61,15 +61,15 @@ function FinishedRow({ f }) {
 function UpcomingRow({ f }) {
   const p = f.prediction;
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '88px 1fr auto 1fr 132px', gap: '10px', alignItems: 'center', padding: '8px 6px', borderTop: '1px solid var(--border-light)' }}>
-      <span style={{ fontSize: '0.72rem', color: f.live ? 'var(--win-away)' : 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: f.live ? 700 : 400 }}>
+    <div className="wc-fx-row wc-fx-upcoming">
+      <span className="wc-fx-time" style={{ fontSize: '0.72rem', color: f.live ? 'var(--win-away)' : 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontWeight: f.live ? 700 : 400 }}>
         {f.live ? '● 进行中' : f.cet}
       </span>
       <span style={{ textAlign: 'right' }}>{f.home_team} {f.home_flag}</span>
       <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>vs</span>
       <span>{f.away_flag} {f.away_team}</span>
       {p ? (
-        <span style={{ fontSize: '0.7rem' }}>
+        <span className="wc-fx-pred" style={{ fontSize: '0.7rem' }}>
           <span style={{ display: 'flex', justifyContent: 'space-between', gap: '6px' }}>
             <span style={{ color: predResultColor(p.pred_result), fontWeight: 700 }}>{RESULT_LABEL[p.pred_result]}</span>
             <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--text-secondary)' }}>{p.pred_home}-{p.pred_away}</span>
