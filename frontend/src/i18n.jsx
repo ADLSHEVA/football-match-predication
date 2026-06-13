@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components --
+   this infra file intentionally exports both the provider and the useT hook */
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { EN } from './translations';
 

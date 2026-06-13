@@ -3,10 +3,7 @@
 FROM node:20-alpine AS frontend
 WORKDIR /app/frontend
 COPY frontend/package*.json ./
-# --legacy-peer-deps: the devDependencies mix eslint@9 with @eslint/js@10
-# (a peer-dep conflict that aborts a strict `npm ci`). eslint is lint-only and
-# unused by the Vite build, so we tolerate the conflict to let the build run.
-RUN npm ci --legacy-peer-deps
+RUN npm ci
 COPY frontend/ ./
 RUN npm run build          # → /app/frontend/dist
 

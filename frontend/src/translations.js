@@ -116,7 +116,7 @@ export const EN = {
   '已结束 · 预测 vs 实际 (': 'Finished · predicted vs actual (',
   '胜平负命中': '1X2 hit', '精确比分命中': 'exact-score hit',
   '暂无已结束的比赛。': 'No finished matches yet.',
-  '显示全部': 'Show all', ' 场': '', '收起': 'Collapse',
+  '显示全部': 'Show all', '收起': 'Collapse',
   '预测 ': 'Predicted ', '● 进行中': '● Live', '赛前预测': 'Pre-match prediction',
 
   // ── World Cup: title odds / groups / bracket ─────────────

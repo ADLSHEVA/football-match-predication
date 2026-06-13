@@ -7,8 +7,7 @@ import { useT } from '../i18n.jsx';
 export default function Dashboard({
   activeLeague,
   setActiveLeague,
-  onSelectMatch,
-  setView
+  onSelectMatch
 }) {
   const { t } = useT();
   const [predictions, setPredictions] = useState([]);
@@ -94,6 +93,7 @@ export default function Dashboard({
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLeague]);
 
   const handleSync = async () => {

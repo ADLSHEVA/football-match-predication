@@ -43,6 +43,7 @@ export default function Standings({ activeLeague, setActiveLeague }) {
 
   useEffect(() => {
     fetchStandings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeLeague]);
 
   return (

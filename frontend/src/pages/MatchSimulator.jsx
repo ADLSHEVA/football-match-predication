@@ -105,6 +105,7 @@ export default function MatchSimulator({ match, activeLeague, onBack }) {
         abortControllerRef.current.abort();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adjustments, match, activeLeague]);
 
   const handleReset = () => {
