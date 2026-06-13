@@ -1,0 +1,22 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Deploy: Render dashboard → New → Blueprint → pick this repo.
+services:
+  - type: web
+    name: eurogoal-predictor
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # sync:false → Render prompts you for the value and stores it as a
+      # secret; it is NEVER written to the repo.
+      - key: FOOTBALL_DATA_API_KEY
+        sync: false
+      - key: THE_ODDS_API_KEY
+        sync: false
+      - key: API_FOOTBALL_KEY
+        sync: false
+      # Optional: lock CORS to your own origins (same-origin needs nothing).
+      # - key: CORS_ALLOW_ORIGINS
+      #   value: https://your-app.onrender.com

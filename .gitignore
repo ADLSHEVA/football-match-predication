@@ -1,0 +1,31 @@
+# ─── Secrets (NEVER commit) ───────────────────────────────
+.env
+.env.*.local
+*.local.env
+
+# ─── Python ───────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# ─── Node / frontend build ────────────────────────────────
+node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+
+# ─── Local SQLite DB (regenerated at runtime) ─────────────
+*.db
+*.sqlite3
+
+# ─── Tooling / IDE / OS ───────────────────────────────────
+.codegraph/
+.claude/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
