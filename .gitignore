@@ -21,6 +21,8 @@ npm-debug.log*
 # ─── Local SQLite DB (regenerated at runtime) ─────────────
 *.db
 *.sqlite3
+# …but DO ship the pre-fitted seed snapshot used to bootstrap fresh deploys
+!backend/seed.db
 
 # ─── Tooling / IDE / OS ───────────────────────────────────
 .codegraph/

@@ -15,6 +15,8 @@ frontend/dist/
 **/*.pyc
 *.db
 *.sqlite3
+# …but DO include the pre-fitted seed snapshot so the image ships with it
+!backend/seed.db
 .venv/
 venv/
 

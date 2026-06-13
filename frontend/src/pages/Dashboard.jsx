@@ -208,6 +208,90 @@ export default function Dashboard({
         <LeagueSelector activeLeague={activeLeague} onChange={setActiveLeague} />
       </div>
 
+      {/* Hypothetical Match Predictor — always available, even with no fixtures */}
+      <div className="glass-panel" style={{ marginBottom: '24px' }}>
+        <h3 className="section-title" style={{ fontSize: '1.05rem', marginBottom: '6px' }}>
+          <Play size={18} style={{ color: 'var(--accent)' }} />
+          {t('假想对战预测')}
+        </h3>
+        <p className="section-subtitle" style={{ marginBottom: '16px' }}>
+          {t('选择任意两支球队，立即预测假想对战结果（无需有真实赛程）。')}
+        </p>
+
+        {teams.length > 0 ? (
+          <div style={{ maxWidth: '620px' }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '12px', flexWrap: 'wrap' }}>
+              <select
+                value={manualHome}
+                onChange={(e) => { setManualHome(e.target.value); setManualPredResult(null); }}
+                style={{ flex: '1 1 180px', padding: '8px 12px', borderRadius: '8px', background: 'rgba(15,23,42,0.6)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}
+              >
+                <option value="">{t('选择主队')}</option>
+                {teams.map(t2 => <option key={t2.name} value={t2.name}>{t2.name}</option>)}
+              </select>
+              <span style={{ fontWeight: 700, color: 'var(--text-muted)' }}>VS</span>
+              <select
+                value={manualAway}
+                onChange={(e) => { setManualAway(e.target.value); setManualPredResult(null); }}
+                style={{ flex: '1 1 180px', padding: '8px 12px', borderRadius: '8px', background: 'rgba(15,23,42,0.6)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}
+              >
+                <option value="">{t('选择客队')}</option>
+                {teams.filter(t2 => t2.name !== manualHome).map(t2 => <option key={t2.name} value={t2.name}>{t2.name}</option>)}
+              </select>
+              <button
+                className="btn-action btn-primary-gradient"
+                onClick={handleManualPredict}
+                disabled={!manualHome || !manualAway || manualPredLoading}
+                style={{ whiteSpace: 'nowrap' }}
+              >
+                {manualPredLoading ? '...' : t('预测')}
+              </button>
+            </div>
+
+            {manualPredResult && !manualPredResult.error && (
+              <div style={{ marginTop: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                  <span>{manualPredResult.home_team} vs {manualPredResult.away_team}</span>
+                  <span>{t('期望进球: ')}{manualPredResult.dixon_coles?.expected_home_goals?.toFixed(2)} - {manualPredResult.dixon_coles?.expected_away_goals?.toFixed(2)}</span>
+                </div>
+                <PredictionGauge
+                  homeWinProb={manualPredResult.dixon_coles?.home_win || 0}
+                  drawProb={manualPredResult.dixon_coles?.draw || 0}
+                  awayWinProb={manualPredResult.dixon_coles?.away_win || 0}
+                />
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  <span>{t('ELO: ')}{manualPredResult.elo?.home_rating?.toFixed(0)} vs {manualPredResult.elo?.away_rating?.toFixed(0)}</span>
+                  <span>{t('ELO 胜率: ')}{(manualPredResult.elo?.home_win * 100)?.toFixed(0)}{t('% 主胜')}</span>
+                </div>
+                <button
+                  className="btn-action"
+                  style={{ width: '100%', marginTop: '12px' }}
+                  onClick={() => onSelectMatch({
+                    home_team: manualPredResult.home_team,
+                    away_team: manualPredResult.away_team,
+                    home_elo: manualPredResult.elo?.home_rating || 1500,
+                    away_elo: manualPredResult.elo?.away_rating || 1500,
+                    expected_home_goals: manualPredResult.dixon_coles?.expected_home_goals || 1.0,
+                    expected_away_goals: manualPredResult.dixon_coles?.expected_away_goals || 1.0
+                  })}
+                >
+                  <Play size={12} /> {t('进入模拟微调面板')}
+                </button>
+              </div>
+            )}
+            {manualPredResult?.error && (
+              <div style={{ marginTop: '12px', padding: '10px', borderRadius: '8px', background: 'rgba(239,68,68,0.1)', color: '#ef4444', fontSize: '0.85rem', textAlign: 'center' }}>
+                {manualPredResult.error}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+            {t('球队列表为空，请先在右侧「数据同步与模型训练」面板点击同步与拟合。')}
+          </div>
+        )}
+      </div>
+
       {/* Main Grid */}
       <div className="dashboard-grid">
 
@@ -355,84 +439,9 @@ export default function Dashboard({
                   ? t('欧冠当前无已安排的比赛，或赛季间歇期。')
                   : `${activeLeague} ${t('赛季已结束或暂无未来赛程。')}`}
                 <div style={{ marginTop: '8px', fontSize: '0.8rem' }}>
-                  {t('你可以在下方手动选择两支球队进行预测，或切换到其他联赛。')}
+                  {t('可使用上方的「假想对战预测」面板，或切换其他联赛。')}
                 </div>
               </div>
-
-              {/* Manual Prediction */}
-              {modelFitted && teams.length > 0 && (
-                <div style={{ maxWidth: '480px', margin: '0 auto' }}>
-                  <h3 className="section-title" style={{ fontSize: '0.95rem', marginBottom: '12px', textAlign: 'center' }}>
-                    <Play size={16} style={{ color: 'var(--accent)' }} />
-                    {t('手动选择比赛进行预测')}
-                  </h3>
-                  <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '12px' }}>
-                    <select
-                      value={manualHome}
-                      onChange={(e) => { setManualHome(e.target.value); setManualPredResult(null); }}
-                      style={{ flex: 1, padding: '8px 12px', borderRadius: '8px', background: 'rgba(15,23,42,0.6)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">{t('选择主队')}</option>
-                      {teams.map(t2 => <option key={t2.name} value={t2.name}>{t2.name}</option>)}
-                    </select>
-                    <span style={{ fontWeight: 700, color: 'var(--text-muted)' }}>VS</span>
-                    <select
-                      value={manualAway}
-                      onChange={(e) => { setManualAway(e.target.value); setManualPredResult(null); }}
-                      style={{ flex: 1, padding: '8px 12px', borderRadius: '8px', background: 'rgba(15,23,42,0.6)', border: '1px solid var(--border-light)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">{t('选择客队')}</option>
-                      {teams.filter(t2 => t2.name !== manualHome).map(t2 => <option key={t2.name} value={t2.name}>{t2.name}</option>)}
-                    </select>
-                    <button
-                      className="btn-action btn-primary-gradient"
-                      onClick={handleManualPredict}
-                      disabled={!manualHome || !manualAway || manualPredLoading}
-                      style={{ whiteSpace: 'nowrap' }}
-                    >
-                      {manualPredLoading ? '...' : t('预测')}
-                    </button>
-                  </div>
-
-                  {/* Result */}
-                  {manualPredResult && !manualPredResult.error && (
-                    <div style={{ marginTop: '12px' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <span>{manualPredResult.home_team} vs {manualPredResult.away_team}</span>
-                        <span>{t('期望进球: ')}{manualPredResult.dixon_coles?.expected_home_goals?.toFixed(2)} - {manualPredResult.dixon_coles?.expected_away_goals?.toFixed(2)}</span>
-                      </div>
-                      <PredictionGauge
-                        homeWinProb={manualPredResult.dixon_coles?.home_win || 0}
-                        drawProb={manualPredResult.dixon_coles?.draw || 0}
-                        awayWinProb={manualPredResult.dixon_coles?.away_win || 0}
-                      />
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                        <span>{t('ELO: ')}{manualPredResult.elo?.home_rating?.toFixed(0)} vs {manualPredResult.elo?.away_rating?.toFixed(0)}</span>
-                        <span>{t('ELO 胜率: ')}{(manualPredResult.elo?.home_win * 100)?.toFixed(0)}{t('% 主胜')}</span>
-                      </div>
-                      <button
-                        className="btn-action"
-                        style={{ width: '100%', marginTop: '12px' }}
-                        onClick={() => onSelectMatch({
-                          home_team: manualPredResult.home_team,
-                          away_team: manualPredResult.away_team,
-                          home_elo: manualPredResult.elo?.home_rating || 1500,
-                          away_elo: manualPredResult.elo?.away_rating || 1500,
-                          expected_home_goals: manualPredResult.dixon_coles?.expected_home_goals || 1.0,
-                          expected_away_goals: manualPredResult.dixon_coles?.expected_away_goals || 1.0
-                        })}
-                      >
-                        <Play size={12} /> {t('进入模拟微调面板')}
-                      </button>
-                    </div>
-                  )}
-                  {manualPredResult?.error && (
-                    <div style={{ marginTop: '12px', padding: '10px', borderRadius: '8px', background: 'rgba(239,68,68,0.1)', color: '#ef4444', fontSize: '0.85rem', textAlign: 'center' }}>
-                      {manualPredResult.error}
-                    </div>
-                  )}
-                </div>
-              )}
 
               <div style={{ marginTop: '20px', textAlign: 'center' }}>
                 <button className="btn-action" onClick={handleSync}>

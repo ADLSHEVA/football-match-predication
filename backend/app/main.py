@@ -67,6 +67,14 @@ async def lifespan(app: FastAPI):
     logger.info("🚀 Starting EuroGoal Predictor backend...")
 
     # 1. Database
+    # On a fresh filesystem (e.g. an ephemeral container) seed the DB from the
+    # shipped, pre-fitted snapshot so all leagues are ready out of the box.
+    seed_path = BASE_DIR / "seed.db"
+    if not DATABASE_PATH.exists() and seed_path.exists():
+        import shutil
+        shutil.copy(seed_path, DATABASE_PATH)
+        logger.info("✅ Seeded database from %s", seed_path)
+
     state.db = Database(str(DATABASE_PATH))
     state.db.initialize()
     logger.info("✅ Database initialized at %s", DATABASE_PATH)

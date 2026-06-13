@@ -56,6 +56,13 @@ export const EN = {
   '你可以在下方手动选择两支球队进行预测，或切换到其他联赛。':
     'Pick two teams below to predict manually, or switch leagues.',
   '手动选择比赛进行预测': 'Pick a match to predict manually',
+  '假想对战预测': 'Hypothetical Match',
+  '选择任意两支球队，立即预测假想对战结果（无需有真实赛程）。':
+    'Pick any two teams to instantly predict a hypothetical match — no live fixture required.',
+  '球队列表为空，请先在右侧「数据同步与模型训练」面板点击同步与拟合。':
+    'No teams loaded yet. Use the "Data Sync & Model Training" panel to sync and fit first.',
+  '可使用上方的「假想对战预测」面板，或切换其他联赛。':
+    'Use the Hypothetical Match panel above, or switch leagues.',
   '选择主队': 'Home team', '选择客队': 'Away team', '预测': 'Predict',
   '期望进球: ': 'Expected goals: ', 'ELO: ': 'ELO: ',
   '进入模拟微调面板': 'Open simulation panel', '重新同步': 'Re-sync',
